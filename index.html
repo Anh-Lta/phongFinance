@@ -1345,7 +1345,7 @@
         function handleFormSubmit(event) {
           event.preventDefault();
           popup.classList.add("hidden");
-
+          alert("Đăng ký thành công, chúng tôi sẽ liên hệ sớm tới bạn");
           var form = event.target;
           var data = getFormData(form);
           if (data.email && !validEmail(data.email)) {
