@@ -1280,9 +1280,13 @@
       </div>
     </section>
     <script>
+      const popup = document.querySelector(".popup");
+
       let form = document.querySelector("form");
       form.addEventListener("submit", (e) => {
         e.preventDefault();
+        popup.classList.add("hidden");
+
         let data = new FormData(form);
         fetch(
           "https://script.google.com/macros/s/AKfycbwGvRLREP3g4Q40a1rysrHwy5HzzG7YGb6QJqTCs9RxHfAYocvtjWH44XB9gmFgP-U4/exec",
@@ -1296,7 +1300,6 @@
           )
           .catch((error) => console.error("Lỗi"));
       });
-      const popup = document.querySelector(".popup");
       const CTAs = document.querySelectorAll(".CTA");
       const hidePopup = () => {
         popup.classList.add("hidden");
