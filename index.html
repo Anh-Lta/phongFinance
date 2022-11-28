@@ -1145,7 +1145,13 @@
                 >
                   ĐĂNG KÝ ĐỂ ĐƯỢC NHẬN TƯ VẤN TỪ CHÚNG TÔI
                 </h3>
-                <form class="space-y-6" id="myForm" method="post">
+                <form
+                  class="space-y-6 gform pure-form pure-form-stacked"
+                  id="myForm"
+                  method="post"
+                  data-email="anhlouuku@gmail.com"
+                  action="https://script.google.com/macros/s/AKfycbz8Y-a0QkhHr5xpf9GwpEjULkiuwAwxb1fsfFdfVSk0T4lk9s4f5b42WIohE8EKEzNbFQ/exec"
+                >
                   <div>
                     <input
                       type="text"
@@ -1281,25 +1287,109 @@
     </section>
     <script>
       const popup = document.querySelector(".popup");
+      (function () {
+        function validEmail(email) {
+          var re =
+            /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+          return re.test(email);
+        }
 
-      let form = document.querySelector("form");
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        popup.classList.add("hidden");
-
-        let data = new FormData(form);
-        fetch(
-          "https://script.google.com/macros/s/AKfycbwGvRLREP3g4Q40a1rysrHwy5HzzG7YGb6QJqTCs9RxHfAYocvtjWH44XB9gmFgP-U4/exec",
-          {
-            method: "POST",
-            body: data,
+        function validateHuman(honeypot) {
+          if (honeypot) {
+            console.log("Robot Detected!");
+            return true;
+          } else {
+            console.log("Welcome Human!");
           }
-        )
-          .then((res) =>
-            alert("Đăng ký thành công, chúng tôi sẽ liên hệ sớm tới bạn")
-          )
-          .catch((error) => console.error("Lỗi"));
-      });
+        }
+        function getFormData(form) {
+          var elements = form.elements;
+
+          var fields = Object.keys(elements)
+            .filter(function (k) {
+              return elements[k].name !== "honeypot";
+            })
+            .map(function (k) {
+              if (elements[k].name !== undefined) {
+                return elements[k].name;
+              } else if (elements[k].length > 0) {
+                return elements[k].item(0).name;
+              }
+            })
+            .filter(function (item, pos, self) {
+              return self.indexOf(item) == pos && item;
+            });
+
+          var formData = {};
+          fields.forEach(function (name) {
+            var element = elements[name];
+            formData[name] = element.value;
+            if (element.length) {
+              var data = [];
+              for (var i = 0; i < element.length; i++) {
+                var item = element.item(i);
+                if (item.checked || item.selected) {
+                  data.push(item.value);
+                }
+              }
+              formData[name] = data.join(", ");
+            }
+          });
+          // add form-specific values into the data
+          formData.formDataNameOrder = JSON.stringify(fields);
+          formData.formGoogleSheetName = form.dataset.sheet || "Sheet1"; // default sheet name
+          formData.formGoogleSendEmail = form.dataset.email || ""; // no email by default
+          // console.log(formData);
+          return formData;
+        }
+
+        function handleFormSubmit(event) {
+          event.preventDefault();
+          popup.classList.add("hidden");
+
+          var form = event.target;
+          var data = getFormData(form);
+          if (data.email && !validEmail(data.email)) {
+            var invalidEmail = form.querySelector(".email-invalid");
+            if (invalidEmail) {
+              invalidEmail.style.display = "block";
+              return false;
+            }
+          } else {
+            var url = form.action;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url);
+            xhr.setRequestHeader(
+              "Content-Type",
+              "application/x-www-form-urlencoded"
+            );
+            xhr.onreadystatechange = function () {
+              // console.log(xhr.status, xhr.statusText);
+              // console.log(xhr.responseText);
+
+              return;
+            };
+            var encoded = Object.keys(data)
+              .map(function (k) {
+                return (
+                  encodeURIComponent(k) + "=" + encodeURIComponent(data[k])
+                );
+              })
+              .join("&");
+            xhr.send(encoded);
+          }
+        }
+
+        function loaded() {
+          console.log("Contact form submission handler loaded successfully.");
+          var forms = document.querySelectorAll("form.gform");
+          for (var i = 0; i < forms.length; i++) {
+            forms[i].addEventListener("submit", handleFormSubmit, false);
+          }
+        }
+        document.addEventListener("DOMContentLoaded", loaded, false);
+      })();
+      // -------------------
       const CTAs = document.querySelectorAll(".CTA");
       const hidePopup = () => {
         popup.classList.add("hidden");
