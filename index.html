@@ -1149,7 +1149,7 @@
                   class="space-y-6 gform pure-form pure-form-stacked"
                   id="myForm"
                   method="post"
-                  data-email="anhlouuku@gmail.com"
+                  data-email="phongsep1221@gmail.com"
                   action="https://script.google.com/macros/s/AKfycbz8Y-a0QkhHr5xpf9GwpEjULkiuwAwxb1fsfFdfVSk0T4lk9s4f5b42WIohE8EKEzNbFQ/exec"
                 >
                   <div>
@@ -1201,7 +1201,7 @@
                     <div class="flex items-center">
                       <input
                         id="checked-checkbox "
-                        type="radio"
+                        type="checkbox"
                         value="Bảng Lương"
                         name="type "
                         class="w-4 h-4 text-[#008037] bg-gray-100 rounded border-gray-300 focus:ring-[#008037] accent-[#008037] focus:ring-2"
@@ -1215,7 +1215,7 @@
                     <div class="flex items-center">
                       <input
                         id="checked-checkbox "
-                        type="radio"
+                        type="checkbox"
                         value="Bảo Hiểm Nhân Thọ"
                         name="type"
                         class="w-4 h-4 text-[#008037] bg-gray-100 rounded border-gray-300 focus:ring-[#008037] accent-[#008037] focus:ring-2"
@@ -1229,7 +1229,7 @@
                     <div class="flex items-center">
                       <input
                         id="checked-checkbox "
-                        type="radio"
+                        type="checkbox"
                         value="Hợp Đồng Vay Cũ"
                         name="type"
                         class="w-4 h-4 text-[#008037] bg-gray-100 rounded border-gray-300 focus:ring-[#008037] accent-[#008037] focus:ring-2"
@@ -1243,7 +1243,7 @@
                     <div class="flex items-center">
                       <input
                         id="checked-checkbox "
-                        type="radio"
+                        type="checkbox"
                         value="Hóa Đơn"
                         name="type"
                         class="w-4 h-4 text-[#008037] bg-gray-100 rounded border-gray-300 focus:ring-[#008037] accent-[#008037] focus:ring-2"
@@ -1257,7 +1257,7 @@
                     <div class="flex items-center">
                       <input
                         id="checked-checkbox "
-                        type="radio"
+                        type="checkbox"
                         value="Khác"
                         name="type"
                         class="w-4 h-4 text-[#008037] bg-gray-100 rounded border-gray-300 focus:ring-[#008037] accent-[#008037] focus:ring-2"
@@ -1346,6 +1346,7 @@
           event.preventDefault();
           popup.classList.add("hidden");
           alert("Đăng ký thành công, chúng tôi sẽ liên hệ sớm tới bạn");
+
           var form = event.target;
           var data = getFormData(form);
           if (data.email && !validEmail(data.email)) {
@@ -1405,6 +1406,7 @@
       if (window.history.replaceState) {
         window.history.replaceState(null, null, window.location.href);
       }
+      // location.reload();
     </script>
   </body>
 </html>
